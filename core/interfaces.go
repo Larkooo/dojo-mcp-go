@@ -26,3 +26,11 @@ type Resource struct {
 	Name    string
 	Content string
 }
+
+// Prompt represents a predefined prompt template for LLMs
+type Prompt struct {
+	Name        string
+	Description string
+	Template    string
+	Variables   []string
+}
