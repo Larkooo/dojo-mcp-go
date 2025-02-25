@@ -1,3 +1,0 @@
-Saying Hello
-Says hello after a prefix
-Say hello world after {{variable}}
