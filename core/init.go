@@ -8,4 +8,5 @@ import (
 func RegisterDefaultTools(registry *Registry) {
 	registry.Register(tools.NewModelTool())
 	registry.Register(tools.NewCodeTool())
+	registry.Register(tools.NewTestTool())
 }
