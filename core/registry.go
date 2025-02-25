@@ -1,35 +1,12 @@
-package tools
+package core
 
 import (
-	"context"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/rs/zerolog/log"
 )
-
-// Tool is an interface that all MCP tools must implement
-type Tool interface {
-	// Name returns the tool's name
-	Name() string
-
-	// Description returns the tool's description
-	Description() string
-
-	// Definition returns the MCP tool definition
-	Definition() *mcp.Tool
-
-	// Execute handles the tool execution
-	Execute(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error)
-}
-
-// Resource represents a text resource that can be provided to LLMs
-type Resource struct {
-	Name    string
-	Content string
-}
 
 // Registry stores all registered tools and resources
 type Registry struct {
@@ -38,7 +15,7 @@ type Registry struct {
 	resourceDir string
 }
 
-// NewRegistry creates a new tool registry
+// NewRegistry creates a new registry
 func NewRegistry() *Registry {
 	return &Registry{
 		tools:       make(map[string]Tool),
@@ -56,8 +33,8 @@ func (r *Registry) Register(tool Tool) {
 		Msg("Registered tool")
 }
 
-// GetAll returns all registered tools
-func (r *Registry) GetAll() map[string]Tool {
+// GetAllTools returns all registered tools
+func (r *Registry) GetAllTools() map[string]Tool {
 	return r.tools
 }
 

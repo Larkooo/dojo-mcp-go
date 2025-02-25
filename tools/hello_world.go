@@ -9,13 +9,16 @@ import (
 
 // HelloWorldTool implements the hello world functionality
 type HelloWorldTool struct {
-	BaseTool
+	name        string
+	description string
+	definition  *mcp.Tool
 }
 
 // NewHelloWorldTool creates a new hello world tool
 func NewHelloWorldTool() *HelloWorldTool {
 	tool := &HelloWorldTool{
-		BaseTool: NewBaseTool("hello_world", "Say hello to someone"),
+		name:        "hello_world",
+		description: "Say hello to someone",
 	}
 
 	// Create MCP tool definition
@@ -27,8 +30,23 @@ func NewHelloWorldTool() *HelloWorldTool {
 		),
 	)
 
-	tool.SetDefinition(&definition)
+	tool.definition = &definition
 	return tool
+}
+
+// Name returns the tool's name
+func (t *HelloWorldTool) Name() string {
+	return t.name
+}
+
+// Description returns the tool's description
+func (t *HelloWorldTool) Description() string {
+	return t.description
+}
+
+// Definition returns the MCP tool definition
+func (t *HelloWorldTool) Definition() *mcp.Tool {
+	return t.definition
 }
 
 // Execute handles the hello world tool execution

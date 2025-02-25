@@ -8,7 +8,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
-	"dojo-mcp/tools" // Import your tools package
+	"dojo-mcp/core" // Import your core package
 )
 
 func main() {
@@ -32,13 +32,13 @@ func main() {
 		"0.0.1",
 	)
 
-	// Create tool registry
-	registry := tools.NewRegistry()
+	// Create registry
+	registry := core.NewRegistry()
 
 	// Register all tools
-	tools.RegisterDefaultTools(registry)
+	core.RegisterDefaultTools(registry)
 	log.Info().
-		Str("component", "tools").
+		Str("component", "core").
 		Msg("Registered default tools")
 
 	// Load resources from static/insights directory
@@ -55,7 +55,7 @@ func main() {
 	}
 
 	// Add all tools to the server
-	for _, tool := range registry.GetAll() {
+	for _, tool := range registry.GetAllTools() {
 		s.AddTool(*tool.Definition(), tool.Execute)
 		log.Debug().
 			Str("component", "server").
