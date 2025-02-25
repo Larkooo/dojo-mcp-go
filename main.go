@@ -2,25 +2,17 @@ package main
 
 import (
 	"os"
-	"time"
 
 	"github.com/mark3labs/mcp-go/server"
-	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
-	"dojo-mcp/core" // Import your core package
+	"dojo-mcp/core"
+	"dojo-mcp/logger"
 )
 
 func main() {
-	// Configure pretty logging with colors
-	log.Logger = log.Output(zerolog.ConsoleWriter{
-		Out:        os.Stdout,
-		TimeFormat: time.RFC3339,
-		NoColor:    false,
-	})
-
-	// Set global log level
-	zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	// Configure logging
+	logger.Configure()
 
 	log.Info().
 		Str("component", "main").
