@@ -163,7 +163,7 @@ func (r *Registry) LoadPrompts() error {
 				return nil
 			}
 
-			name := strings.TrimSpace(lines[0])
+			name := strings.TrimSuffix(strings.TrimSpace(filepath.Base(path)), filepath.Ext(path))
 			description := strings.TrimSpace(lines[1])
 			template := strings.Join(lines[2:], "\n")
 
@@ -194,25 +194,27 @@ func extractVariables(template string) []string {
 	varMap := make(map[string]bool) // To ensure uniqueness
 
 	// Simple regex-like parsing for {{variable}}
-	start := 0
-	for {
-		start = strings.Index(template[start:], "{{")
-		if start == -1 {
+	pos := 0
+	for pos < len(template) {
+		startIdx := strings.Index(template[pos:], "{{")
+		if startIdx == -1 {
 			break
 		}
+		startIdx += pos
 
-		end := strings.Index(template[start:], "}}")
-		if end == -1 {
+		endIdx := strings.Index(template[startIdx:], "}}")
+		if endIdx == -1 {
 			break
 		}
+		endIdx += startIdx
 
-		varName := strings.TrimSpace(template[start+2 : start+end])
+		varName := strings.TrimSpace(template[startIdx+2 : endIdx])
 		if varName != "" && !varMap[varName] {
 			variables = append(variables, varName)
 			varMap[varName] = true
 		}
 
-		start += end + 2
+		pos = endIdx + 2
 	}
 
 	return variables
@@ -247,7 +249,19 @@ func (r *Registry) RenderPrompt(name string, vars map[string]string) (string, er
 
 	result := prompt.Template
 	for key, value := range vars {
-		result = strings.ReplaceAll(result, "{{"+key+"}}", value)
+		if strings.HasPrefix(value, "prompt:") {
+			promptName := strings.TrimPrefix(value, "prompt:")
+			if otherPrompt, exists := r.prompts[promptName]; exists {
+				result = strings.ReplaceAll(result, "{{"+key+"}}", otherPrompt.Template)
+			}
+		} else if strings.HasPrefix(value, "insight:") {
+			insightName := strings.TrimPrefix(value, "insight:")
+			if resource, exists := r.resources[insightName]; exists {
+				result = strings.ReplaceAll(result, "{{"+key+"}}", resource.Content)
+			}
+		} else {
+			result = strings.ReplaceAll(result, "{{"+key+"}}", value)
+		}
 	}
 
 	// Check if any variables are still in the template

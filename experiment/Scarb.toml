@@ -1,0 +1,12 @@
+[package]
+name = "movement_game"
+version = "0.1.0"
+edition = "2023_10"
+
+[dependencies]
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v0.5.1" }
+
+[[target.dojo]]
+
+[tool.dojo]
+initializer_class_hash = "0x0" 

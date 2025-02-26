@@ -9,8 +9,8 @@ func NewTestTool(renderer common.PromptRenderer) *InsightTool {
 	return NewInsightTool(
 		"dojo_test",
 		"Generate test code for Dojo systems in Cairo with comprehensive documentation",
-		"test.txt",
-		"test.txt",
+		"test",
+		"test",
 		renderer,
 	)
 }

@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/mark3labs/mcp-go/mcp"
+	"github.com/rs/zerolog/log"
 )
 
 // InsightTool is a tool that uses insight files to enhance prompts
@@ -55,13 +56,18 @@ func (t *InsightTool) Execute(ctx context.Context, request mcp.CallToolRequest) 
 
 	// Create variables map for rendering
 	vars := map[string]string{
-		"user_request":  userPrompt,
-		"documentation": string(t.insight),
+		"prompt":  userPrompt,
+		"insight": "insight:" + t.insight,
 	}
 
 	// Render the prompt using the registry
 	fullPrompt, err := t.renderer.RenderPrompt(t.prompt, vars)
 	if err != nil {
+		log.Warn().
+			Str("tool", t.Name()).
+			Str("prompt", t.prompt).
+			Str("component", "tools").
+			Msgf("Failed rendering prompt: %v", err)
 		return mcp.NewToolResultError(fmt.Sprintf("Failed to render prompt: %v", err)), nil
 	}
 

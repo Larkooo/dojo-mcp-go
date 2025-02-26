@@ -9,8 +9,8 @@ func NewModelTool(renderer common.PromptRenderer) *InsightTool {
 	return NewInsightTool(
 		"dojo_model",
 		"Generate Dojo models in Cairo with comprehensive documentation.",
-		"model.txt",
-		"model.txt",
+		"model",
+		"model",
 		renderer,
 	)
 }
