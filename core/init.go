@@ -6,7 +6,7 @@ import (
 
 // RegisterDefaultTools registers all default tools in the registry
 func RegisterDefaultTools(registry *Registry) {
-	registry.Register(tools.NewModelTool())
-	registry.Register(tools.NewCodeTool())
-	registry.Register(tools.NewTestTool())
+	registry.Register(tools.NewModelTool(registry))
+	registry.Register(tools.NewCodeTool(registry))
+	registry.Register(tools.NewTestTool(registry))
 }

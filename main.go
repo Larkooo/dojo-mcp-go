@@ -25,6 +25,7 @@ func main() {
 	s := server.NewMCPServer(
 		"Dojo MCP",
 		"0.0.1",
+		server.WithPromptCapabilities(true),
 	)
 
 	// Create registry

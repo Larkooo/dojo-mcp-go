@@ -6,32 +6,37 @@ import (
 	"path/filepath"
 	"strings"
 
+	"dojo-mcp/common"
+
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/rs/zerolog/log"
 )
 
 // Registry stores all registered tools, resources and prompts
 type Registry struct {
-	tools       map[string]Tool
-	resources   map[string]Resource
-	prompts     map[string]Prompt
+	tools       map[string]common.Tool
+	resources   map[string]common.Resource
+	prompts     map[string]common.Prompt
 	resourceDir string
 	promptDir   string
 }
 
+// Ensure Registry implements PromptRenderer
+var _ common.PromptRenderer = (*Registry)(nil)
+
 // NewRegistry creates a new registry
 func NewRegistry() *Registry {
 	return &Registry{
-		tools:       make(map[string]Tool),
-		resources:   make(map[string]Resource),
-		prompts:     make(map[string]Prompt),
+		tools:       make(map[string]common.Tool),
+		resources:   make(map[string]common.Resource),
+		prompts:     make(map[string]common.Prompt),
 		resourceDir: "static/insights", // Default directory for resources
 		promptDir:   "static/prompts",  // Default directory for prompts
 	}
 }
 
 // Register adds a tool to the registry
-func (r *Registry) Register(tool Tool) {
+func (r *Registry) Register(tool common.Tool) {
 	r.tools[tool.Name()] = tool
 	log.Debug().
 		Str("component", "registry").
@@ -40,7 +45,7 @@ func (r *Registry) Register(tool Tool) {
 }
 
 // RegisterTools registers multiple tools at once
-func (r *Registry) RegisterTools(tools ...Tool) {
+func (r *Registry) RegisterTools(tools ...common.Tool) {
 	for _, tool := range tools {
 		r.Register(tool)
 	}
@@ -51,7 +56,7 @@ func (r *Registry) RegisterTools(tools ...Tool) {
 }
 
 // GetAllTools returns all registered tools
-func (r *Registry) GetAllTools() map[string]Tool {
+func (r *Registry) GetAllTools() map[string]common.Tool {
 	return r.tools
 }
 
@@ -103,7 +108,7 @@ func (r *Registry) LoadResources() error {
 
 			// Use the filename (without extension) as the resource name
 			name := strings.TrimSuffix(filepath.Base(path), filepath.Ext(path))
-			r.resources[name] = Resource{
+			r.resources[name] = common.Resource{
 				Name:    name,
 				Content: string(content),
 			}
@@ -165,7 +170,7 @@ func (r *Registry) LoadPrompts() error {
 			// Extract variables from template (format: {{variable}})
 			variables := extractVariables(template)
 
-			r.prompts[name] = Prompt{
+			r.prompts[name] = common.Prompt{
 				Name:        name,
 				Description: description,
 				Template:    template,
@@ -214,7 +219,7 @@ func extractVariables(template string) []string {
 }
 
 // RegisterPrompt manually adds a prompt to the registry
-func (r *Registry) RegisterPrompt(prompt Prompt) {
+func (r *Registry) RegisterPrompt(prompt common.Prompt) {
 	r.prompts[prompt.Name] = prompt
 	log.Debug().
 		Str("component", "registry").
@@ -223,13 +228,13 @@ func (r *Registry) RegisterPrompt(prompt Prompt) {
 }
 
 // GetPrompt returns a specific prompt by name
-func (r *Registry) GetPrompt(name string) (Prompt, bool) {
+func (r *Registry) GetPrompt(name string) (common.Prompt, bool) {
 	prompt, exists := r.prompts[name]
 	return prompt, exists
 }
 
 // GetAllPrompts returns all registered prompts
-func (r *Registry) GetAllPrompts() map[string]Prompt {
+func (r *Registry) GetAllPrompts() map[string]common.Prompt {
 	return r.prompts
 }
 
@@ -256,13 +261,13 @@ func (r *Registry) RenderPrompt(name string, vars map[string]string) (string, er
 }
 
 // GetResource returns a specific resource by name
-func (r *Registry) GetResource(name string) (Resource, bool) {
+func (r *Registry) GetResource(name string) (common.Resource, bool) {
 	resource, exists := r.resources[name]
 	return resource, exists
 }
 
 // GetAllResources returns all loaded resources
-func (r *Registry) GetAllResources() map[string]Resource {
+func (r *Registry) GetAllResources() map[string]common.Resource {
 	return r.resources
 }
 

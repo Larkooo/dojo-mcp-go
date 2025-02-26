@@ -2,9 +2,8 @@ package tools
 
 import (
 	"context"
+	"dojo-mcp/common"
 	"fmt"
-	"os"
-	"path/filepath"
 
 	"github.com/mark3labs/mcp-go/mcp"
 )
@@ -12,8 +11,9 @@ import (
 // InsightTool is a tool that uses insight files to enhance prompts
 type InsightTool struct {
 	mcp.Tool
-	insightFile    string
-	promptTemplate string
+	insight  string
+	prompt   string
+	renderer common.PromptRenderer
 }
 
 func (t *InsightTool) Name() string {
@@ -29,7 +29,7 @@ func (t *InsightTool) Definition() mcp.Tool {
 }
 
 // NewInsightTool creates a new tool that uses an insight file
-func NewInsightTool(name, description, insightFile, promptTemplate string) *InsightTool {
+func NewInsightTool(name, description, insight, prompt string, renderer common.PromptRenderer) *InsightTool {
 	tool := &InsightTool{
 		Tool: mcp.NewTool(name,
 			mcp.WithDescription(description),
@@ -38,8 +38,9 @@ func NewInsightTool(name, description, insightFile, promptTemplate string) *Insi
 				mcp.Description("Your specific request related to "+name),
 			),
 		),
-		insightFile:    insightFile,
-		promptTemplate: promptTemplate,
+		insight:  insight,
+		prompt:   prompt,
+		renderer: renderer,
 	}
 
 	return tool
@@ -52,15 +53,17 @@ func (t *InsightTool) Execute(ctx context.Context, request mcp.CallToolRequest) 
 		return mcp.NewToolResultError("prompt must be a string"), nil
 	}
 
-	// Read the insight file
-	insightPath := filepath.Join("static/insights", t.insightFile)
-	insightContent, err := os.ReadFile(insightPath)
-	if err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("Failed to read insight file: %v", err)), nil
+	// Create variables map for rendering
+	vars := map[string]string{
+		"user_request":  userPrompt,
+		"documentation": string(t.insight),
 	}
 
-	// Format the prompt using the template and insight content
-	fullPrompt := fmt.Sprintf(t.promptTemplate, userPrompt, string(insightContent))
+	// Render the prompt using the registry
+	fullPrompt, err := t.renderer.RenderPrompt(t.prompt, vars)
+	if err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("Failed to render prompt: %v", err)), nil
+	}
 
 	return mcp.NewToolResultText(fullPrompt), nil
 }

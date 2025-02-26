@@ -1,4 +1,4 @@
-package core
+package common
 
 import (
 	"context"
@@ -33,4 +33,10 @@ type Prompt struct {
 	Description string
 	Template    string
 	Variables   []string
+}
+
+// PromptRenderer is an interface for rendering prompts with variables
+type PromptRenderer interface {
+	// RenderPrompt fills a prompt template with the provided variables
+	RenderPrompt(name string, vars map[string]string) (string, error)
 }

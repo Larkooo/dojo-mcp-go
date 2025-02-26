@@ -1,0 +1,35 @@
+When working with Dojo systems and logic, remember these critical points:
+
+1. Systems are functions within Dojo contracts that act on the world
+2. Use self.world(<NAMESPACE>) to access the world from systems
+3. Systems need explicit permissions to write to models
+4. Keep systems small, focused, and stateless when possible
+5. For reading models:
+   - Use world.read_model(key) to retrieve a model
+   - For multiple keys, provide them as a tuple: world.read_model((key1, key2))
+   - Default values (0) are returned for non-existent models
+
+6. For writing models:
+   - Use world.write_model(@model) to update state
+   - Remember to update all relevant models in a transaction
+
+7. For validation:
+   - Use asserts for validating conditions and providing error messages
+   - Always validate inputs and game state before making changes
+   - Include descriptive error messages in asserts
+
+8. For events:
+   - Use world.emit_event(@Event { ... }) for custom events
+   - Custom events must have #[dojo::event] attribute and at least one #[key]
+   - The world automatically emits events for model updates so you dont need to emit any event for that.
+
+9. For advanced operations:
+   - Use read_member/write_member for accessing specific model fields
+   - Use read_schema for efficiently reading parts of models
+   - Use world.uuid() to generate unique IDs
+
+Please address the following user request about Dojo systems and logic:
+{{prompt}}
+
+The documentation below provides additional details that may help you respond:
+{{insight}}
