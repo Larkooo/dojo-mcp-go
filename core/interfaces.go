@@ -14,8 +14,8 @@ type Tool interface {
 	// Description returns the tool's description
 	Description() string
 
-	// Definition returns the MCP tool definition
-	Definition() *mcp.Tool
+	// Tool returns the MCP tool
+	Definition() mcp.Tool
 
 	// Execute handles the tool execution
 	Execute(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error)

@@ -39,6 +39,17 @@ func (r *Registry) Register(tool Tool) {
 		Msg("Registered tool")
 }
 
+// RegisterTools registers multiple tools at once
+func (r *Registry) RegisterTools(tools ...Tool) {
+	for _, tool := range tools {
+		r.Register(tool)
+	}
+	log.Debug().
+		Str("component", "registry").
+		Int("count", len(tools)).
+		Msg("Registered multiple tools")
+}
+
 // GetAllTools returns all registered tools
 func (r *Registry) GetAllTools() map[string]Tool {
 	return r.tools

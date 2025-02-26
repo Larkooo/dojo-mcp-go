@@ -64,7 +64,7 @@ func main() {
 
 	// Add all tools to the server
 	for _, tool := range registry.GetAllTools() {
-		s.AddTool(*tool.Definition(), tool.Execute)
+		s.AddTool(tool.Definition(), tool.Execute)
 		log.Debug().
 			Str("component", "server").
 			Str("tool", tool.Name()).
