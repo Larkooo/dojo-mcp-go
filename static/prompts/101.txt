@@ -63,8 +63,9 @@ Please address the following user request about Dojo game development:
 The documentation below provides additional details that may help you respond:
 {{insight}}
 
-Once you've read this book and setup your sozo project, you should follow the prompts in this order
-- model prompt to set up models
-- logic prompt to setup systems contracts etc.
-- config finally to verify everything is well setup
-- test to setup tests and verify game logic
+Once you've read this guide you should follow this in order:
+- sozo init <name>
+- call the model prompt and then use it to set up models
+- call the logic prompt to setup systems contracts etc.
+- call the config prompt finally to verify everything is well setup
+- call the test prompt to setup tests and verify game logic
