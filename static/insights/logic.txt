@@ -606,81 +606,126 @@ fn move(ref self: ContractState, direction: Direction) {
 }
 Keep in mind that the world already emits a core event anytime a model is updated. So you don't need to emit events to keep track of the same information.
 
-Events emitted by the world
-Here's a breakdown of the events emitted by the world:
 
+Finally here is an example of a contract "actions.cairo" with systems inside.
+Refer to this when writing systems / contracts. Make sure you have the correct imports, syntax and mutability specifiers.
 
-enum Event {
-    WorldSpawned: WorldSpawned,
-    WorldUpgraded: WorldUpgraded,
-    NamespaceRegistered: NamespaceRegistered,
-    ModelRegistered: ModelRegistered,
-    EventRegistered: EventRegistered,
-    ContractRegistered: ContractRegistered,
-    ModelUpgraded: ModelUpgraded,
-    EventUpgraded: EventUpgraded,
-    ContractUpgraded: ContractUpgraded,
-    ContractInitialized: ContractInitialized,
-    EventEmitted: EventEmitted,
-    MetadataUpdate: MetadataUpdate,
-    StoreSetRecord: StoreSetRecord,
-    StoreUpdateRecord: StoreUpdateRecord,
-    StoreUpdateMember: StoreUpdateMember,
-    StoreDelRecord: StoreDelRecord,
-    WriterUpdated: WriterUpdated,
-    OwnerUpdated: OwnerUpdated,
+use dojo_starter::models::{Direction, Position};
+
+// define the interface
+#[starknet::interface]
+pub trait IActions<T> {
+    fn spawn(ref self: T);
+    fn move(ref self: T, direction: Direction);
 }
-WorldSpawned
-The WorldSpawned event is emitted when the world is spawned (deployed).
 
-WorldUpgraded
-The WorldUpgraded event is emitted when the world is upgraded to a new class hash (the address of the world remains the same).
+// dojo decorator
+#[dojo::contract]
+pub mod actions {
+    use super::{IActions, Direction, Position, next_position};
+    use starknet::{ContractAddress, get_caller_address};
+    use dojo_starter::models::{Vec2, Moves};
 
-NamespaceRegistered
-The NamespaceRegistered event is emitted when a new namespace is registered in the world, with its name and its hash.
+    use dojo::model::{ModelStorage};
+    use dojo::event::EventStorage;
 
-ModelRegistered
-The ModelRegistered event is emitted when a model is registered in the world, which contains all the information about the model including it's type layout.
+    #[derive(Copy, Drop, Serde)]
+    #[dojo::event]
+    pub struct Moved {
+        #[key]
+        pub player: ContractAddress,
+        pub direction: Direction,
+    }
 
-EventRegistered
-The EventRegistered event is emitted when an event is registered in the world, which contains all the information about the event including it's type layout.
+    #[abi(embed_v0)]
+    impl ActionsImpl of IActions<ContractState> {
+        fn spawn(ref self: ContractState) {
+            // Get the default world.
+            let mut world = self.world(@"ns");
 
-ContractRegistered
-The ContractRegistered event is emitted when a Dojo contract is registered (deployed). The deployment is managed by the world itself.
+            // Get the address of the current caller, possibly the player's address.
+            let player = get_caller_address();
+            // Retrieve the player's current position from the world.
+            let position: Position = world.read_model(player);
 
-ModelUpgraded
-The ModelUpgraded event is emitted when an existing model is upgraded to a new class hash. Note that the model contract gets a new address when upgraded.
+            // Update the world state with the new data.
 
-EventUpgraded
-The EventUpgraded event is emitted when an existing event is upgraded to a new class hash. Note that the event contract gets a new address when upgraded.
+            // 1. Move the player's position 10 units in both the x and y direction.
+            let new_position = Position {
+                player, vec: Vec2 { x: position.vec.x + 10, y: position.vec.y + 10 },
+            };
 
-ContractUpgraded
-The ContractUpgraded event is emitted when a Dojo contract is upgraded to a new class hash (the address of such Dojo contract remains the same).
+            // Write the new position to the world.
+            world.write_model(@new_position);
 
-ContractInitialized
-The ContractInitialized event is emitted when a Dojo contract is initialized with some specific call data. The provided call data are attached to the event.
+            // 2. Set the player's remaining moves to 100.
+            let moves = Moves {
+                player, remaining: 100, last_direction: Option::None, can_move: true,
+            };
 
-EventEmitted
-The EventEmitted event is emitted when a Dojo event is emitted with the emit_event world function. This event contains the data of the Dojo emitted event such as its selector, its keys and values.
+            // Write the new moves to the world.
+            world.write_model(@moves);
+        }
 
-MetadataUpdate
-The MetadataUpdate event is emitted when the metadata of a resource (world, Dojo contract, Dojo model) is updated.
+        // Implementation of the move function for the ContractState struct.
+        fn move(ref self: ContractState, direction: Direction) {
+            // Get the address of the current caller, possibly the player's address.
 
-StoreSetRecord
-The StoreSetRecord event is emitted when a model identified by its keys is updated in the world's store.
+            let mut world = self.world(@"ns");
 
-StoreUpdateRecord
-The StoreUpdateRecord event is emitted when a model identified by its entity_id is updated in the world's store.
+            let player = get_caller_address();
 
-StoreUpdateMember
-The StoreUpdateMember event is emitted when a model member is updated in the world's store.
+            // Retrieve the player's current position and moves data from the world.
+            let position: Position = world.read_model(player);
+            let mut moves: Moves = world.read_model(player);
+            // if player hasn't spawn, read returns model default values. This leads to sub overflow
+            // afterwards.
+            // Plus it's generally considered as a good pratice to fast-return on matching
+            // conditions.
+            if !moves.can_move {
+                return;
+            }
 
-StoreDelRecord
-The StoreDelRecord event is emitted when a model is deleted from the world's store.
+            // Deduct one from the player's remaining moves.
+            moves.remaining -= 1;
 
-WriterUpdated
-The WriterUpdated event is emitted when the writer permission on a model has changed.
+            // Update the last direction the player moved in.
+            moves.last_direction = Option::Some(direction);
 
-OwnerUpdated
-The OwnerUpdated event is emitted when the owner permission on a model has changed.
+            // Calculate the player's next position based on the provided direction.
+            let next = next_position(position, moves.last_direction);
 
+            // Write the new position to the world.
+            world.write_model(@next);
+
+            // Write the new moves to the world.
+            world.write_model(@moves);
+
+            // Emit an event to the world to notify about the player's move.
+            world.emit_event(@Moved { player, direction });
+        }
+    }
+
+    #[generate_trait]
+    impl InternalImpl of InternalTrait {
+        /// Use the default namespace "dojo_starter". This function is handy since the ByteArray
+        /// can't be const.
+        fn world_default(self: @ContractState) -> dojo::world::WorldStorage {
+            self.world(@"dojo_starter")
+        }
+    }
+}
+
+// Define function like this:
+fn next_position(mut position: Position, direction: Option<Direction>) -> Position {
+    match direction {
+        Option::None => { return position; },
+        Option::Some(d) => match d {
+            Direction::Left => { position.vec.x -= 1; },
+            Direction::Right => { position.vec.x += 1; },
+            Direction::Up => { position.vec.y -= 1; },
+            Direction::Down => { position.vec.y += 1; },
+        },
+    };
+    position
+}
