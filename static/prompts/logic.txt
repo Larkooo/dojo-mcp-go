@@ -33,6 +33,7 @@ When working with Dojo systems and logic, remember these critical points:
 12. Make sure that your world reference is mutable when you are writing models. `let mut world = self.world(@"namespace");`
 13. When doing conversions between integers. Keep in mind that going from types like ContractAddress -> u32 or the opposite is impossible.
    - You will need to convert the ContractAddress into a Felt and then into a u32. Also remember that conversions to smaller types, like a Felt to a u32 need to use try_into().unwrap()
+14. ALWAYS MAKE sure that your world_default or self.world(@"<NAMESPACE>") is correct. You should specify the correct namespace to use, which should correspond to the one in your profiles/config files.
 
 Please address the following user request about Dojo systems and logic:
 {{prompt}}
