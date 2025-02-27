@@ -83,5 +83,12 @@ description = "Set of actions for a player"
 tag = "dojo_starter-beast_battle"
 description = "Beast battle game system"
 
+# External Contracts
+[[external_contracts]]
+contract_name = "BeastCoin"
+instance_name = "BeastCoin"
+salt = "1"
+constructor_data = ["0x127fd5f1fe78a71f8bcd1fec63e3fe2f0486b6ecd5c86a0466c3a21fa5cfcec", "str:BeastCoin", "str:BEAST", "u256:0x10000000000000", "0x127fd5f1fe78a71f8bcd1fec63e3fe2f0486b6ecd5c86a0466c3a21fa5cfcec"]
+
 [writers]
 "dojo_starter" = ["dojo_starter-actions", "dojo_starter-beast_battle"]

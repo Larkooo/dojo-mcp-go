@@ -48,6 +48,8 @@ When working with token contracts in Dojo, remember these critical points:
     - Implement proper access control for mint/burn functions
     - Consider rate limiting for token generation
     - Test thoroughly before deployment
+11. Dont forget to write the trait for the token contract and use the dispatcher in the systems to mint/interact with the token. DONT FORGET to make it public to be accessible from outside
+12. Dont forget to add the new modules in the lib.cairo. 
 
 Please address the following user request about token contracts in Dojo:
 {{prompt}}

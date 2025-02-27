@@ -3,6 +3,7 @@ use crate::models::{Beast, Player, BattleResult, GameSettings};
 use dojo::model::{ModelStorage, ModelValueStorage, Model};
 use dojo::event::EventStorage;
 use dojo::world::{WorldStorage, WorldStorageTrait};
+use crate::tokens::interfaces::{IBeastCoinDispatcher, IBeastCoinDispatcherTrait};
 
 // Define the interface for our beast battle system
 #[starknet::interface]
@@ -33,6 +34,7 @@ pub struct BeastAttacked {
     pub damage_dealt: u32,
     pub xp_earned: u32,
     pub beast_hp_remaining: u32,
+    pub tokens_earned: u256,
 }
 
 #[derive(Copy, Drop, Serde)]
@@ -43,6 +45,7 @@ pub struct PlayerLeveledUp {
     pub old_level: u32,
     pub new_level: u32,
     pub new_attack_power: u32,
+    pub tokens_earned: u256,
 }
 
 #[derive(Copy, Drop, Serde)]
@@ -59,6 +62,7 @@ pub struct BeastLeveledUp {
 // Constants
 const BEAST_ID: u32 = 1;
 const GAME_SETTINGS_ID: u32 = 1;
+const BEAST_COIN_ADDRESS: felt252 = 0; // This will be set during deployment
 
 // Implement the beast battle system
 #[dojo::contract]
@@ -66,7 +70,8 @@ pub mod beast_battle {
     use super::{
         IBeastBattle, Beast, Player, BattleResult, GameSettings, 
         PlayerRegistered, BeastAttacked, PlayerLeveledUp, BeastLeveledUp,
-        BEAST_ID, GAME_SETTINGS_ID
+        BEAST_ID, GAME_SETTINGS_ID, BEAST_COIN_ADDRESS,
+        IBeastCoinDispatcher, IBeastCoinDispatcherTrait
     };
     use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
     use dojo::model::{ModelStorage, ModelValueStorage, Model};
@@ -132,6 +137,12 @@ pub mod beast_battle {
                 level: player.level, 
                 attack_power: player.attack_power 
             });
+            
+            // Reward player with initial tokens
+            if BEAST_COIN_ADDRESS != 0 {
+                let beast_coin = IBeastCoinDispatcher { contract_address: BEAST_COIN_ADDRESS.try_into().unwrap() };
+                beast_coin.mint(player_address, 100_u256); // Give 100 tokens as welcome bonus
+            }
         }
         
         // Allow a player to attack the beast
@@ -175,9 +186,20 @@ pub mod beast_battle {
             let xp_earned = damage * settings.xp_per_damage;
             player.xp += xp_earned;
             
+            // Calculate tokens earned (1 token per 10 damage)
+            let tokens_earned = (damage / 10 + 1).into(); // Minimum 1 token
+            
+            // Reward player with tokens
+            if BEAST_COIN_ADDRESS != 0 {
+                let beast_coin = IBeastCoinDispatcher { contract_address: BEAST_COIN_ADDRESS.try_into().unwrap() };
+                beast_coin.mint(player_address, tokens_earned);
+            }
+            
             // Check if player levels up
             let xp_needed_for_level_up = settings.level_up_xp_base + 
                 (player.level * settings.level_up_xp_factor);
+            
+            let mut level_up_tokens: u256 = 0;
                 
             if player.xp >= xp_needed_for_level_up {
                 let old_level = player.level;
@@ -185,12 +207,21 @@ pub mod beast_battle {
                 player.xp -= xp_needed_for_level_up;
                 player.attack_power += settings.player_attack_per_level;
                 
+                // Reward player with tokens for leveling up (50 tokens per level)
+                level_up_tokens = (50 * player.level).into();
+                
+                if BEAST_COIN_ADDRESS != 0 {
+                    let beast_coin = IBeastCoinDispatcher { contract_address: BEAST_COIN_ADDRESS.try_into().unwrap() };
+                    beast_coin.mint(player_address, level_up_tokens);
+                }
+                
                 // Emit player level up event
                 world.emit_event(@PlayerLeveledUp { 
                     player: player_address, 
                     old_level, 
                     new_level: player.level, 
-                    new_attack_power: player.attack_power 
+                    new_attack_power: player.attack_power,
+                    tokens_earned: level_up_tokens
                 });
             }
             
@@ -217,7 +248,8 @@ pub mod beast_battle {
                 player: player_address, 
                 damage_dealt: damage, 
                 xp_earned, 
-                beast_hp_remaining: beast.hp 
+                beast_hp_remaining: beast.hp,
+                tokens_earned
             });
         }
         

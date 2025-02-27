@@ -1543,7 +1543,7 @@
     },
     {
       "address": "0x79dbddb39035695e6e98eb88fbbc68824b5438fe2990f7d8033b1b1dd3bdffc",
-      "class_hash": "0x7abea4120611c4245edb2e49a48dcb27ee1ed806a43f50b4f2eeb48e7e34025",
+      "class_hash": "0x3a663974fb554aa8e30a8a1562cc58b8626997bdb8c790496ec1ea64796cda2",
       "abi": [
         {
           "type": "impl",
@@ -1883,7 +1883,7 @@
   "events": [
     {
       "members": [],
-      "class_hash": "0x1a7ab87dcfeaa39f19f523bf9788521775325fe4541ba9efa9fe12088a183d7",
+      "class_hash": "0x50a270cb531f62d2ee6ac514dcd7b5047739a2e954f8ad0bda037b88949628c",
       "tag": "dojo_starter-BeastAttacked",
       "selector": "0x372e5483d311dd4c7c32cd2b884aa2b827f60f238499aee63d9166180e9d478"
     },
@@ -1901,7 +1901,7 @@
     },
     {
       "members": [],
-      "class_hash": "0x74aeceb973b00187c0b11082b3574c594e7330fdeb074716e972a11f5882126",
+      "class_hash": "0x6076b99e55e385f7cb89843619e9e6b526c2454eda6a21808b94155b35a49f2",
       "tag": "dojo_starter-PlayerLeveledUp",
       "selector": "0x4fd8a030617cbc995cf7e3153c85bef69168e123228c021deccd063c58036a5"
     },
@@ -1912,5 +1912,516 @@
       "selector": "0x4d4b252a12a92f852af047cbee66abba9f029f66d1195ae0926437fd975b9e"
     }
   ],
-  "external_contracts": []
+  "external_contracts": [
+    {
+      "class_hash": "0x5065dab8e121248f9c9294e31723ae2d3cfb1cb66df2b47f7db397eecce4ccc",
+      "contract_name": "BeastCoin",
+      "instance_name": "BeastCoin",
+      "address": "0x16e1949dc267c31cf6f59ca670318004af702e09f698f49951aa5e9483d65c6",
+      "abi": [
+        {
+          "type": "struct",
+          "name": "core::integer::u256",
+          "members": [
+            {
+              "name": "low",
+              "type": "core::integer::u128"
+            },
+            {
+              "name": "high",
+              "type": "core::integer::u128"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "inputs": [
+            {
+              "name": "recipient",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "amount",
+              "type": "core::integer::u256"
+            }
+          ],
+          "outputs": [],
+          "state_mutability": "external"
+        },
+        {
+          "type": "function",
+          "name": "mint_to_self",
+          "inputs": [
+            {
+              "name": "amount",
+              "type": "core::integer::u256"
+            }
+          ],
+          "outputs": [],
+          "state_mutability": "external"
+        },
+        {
+          "type": "impl",
+          "name": "ERC20MixinImpl",
+          "interface_name": "openzeppelin_token::erc20::interface::IERC20Mixin"
+        },
+        {
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
+            {
+              "name": "False",
+              "type": "()"
+            },
+            {
+              "name": "True",
+              "type": "()"
+            }
+          ]
+        },
+        {
+          "type": "struct",
+          "name": "core::byte_array::ByteArray",
+          "members": [
+            {
+              "name": "data",
+              "type": "core::array::Array::<core::bytes_31::bytes31>"
+            },
+            {
+              "name": "pending_word",
+              "type": "core::felt252"
+            },
+            {
+              "name": "pending_word_len",
+              "type": "core::integer::u32"
+            }
+          ]
+        },
+        {
+          "type": "interface",
+          "name": "openzeppelin_token::erc20::interface::IERC20Mixin",
+          "items": [
+            {
+              "type": "function",
+              "name": "total_supply",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u256"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "balance_of",
+              "inputs": [
+                {
+                  "name": "account",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u256"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "allowance",
+              "inputs": [
+                {
+                  "name": "owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "spender",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u256"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "transfer",
+              "inputs": [
+                {
+                  "name": "recipient",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "transfer_from",
+              "inputs": [
+                {
+                  "name": "sender",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "recipient",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "approve",
+              "inputs": [
+                {
+                  "name": "spender",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "name",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "symbol",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::byte_array::ByteArray"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "decimals",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u8"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "totalSupply",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::integer::u256"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "balanceOf",
+              "inputs": [
+                {
+                  "name": "account",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::integer::u256"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "transferFrom",
+              "inputs": [
+                {
+                  "name": "sender",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "recipient",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u256"
+                }
+              ],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "impl",
+          "name": "OwnableMixinImpl",
+          "interface_name": "openzeppelin_access::ownable::interface::OwnableABI"
+        },
+        {
+          "type": "interface",
+          "name": "openzeppelin_access::ownable::interface::OwnableABI",
+          "items": [
+            {
+              "type": "function",
+              "name": "owner",
+              "inputs": [],
+              "outputs": [
+                {
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "transfer_ownership",
+              "inputs": [
+                {
+                  "name": "new_owner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "renounce_ownership",
+              "inputs": [],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "transferOwnership",
+              "inputs": [
+                {
+                  "name": "newOwner",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "external"
+            },
+            {
+              "type": "function",
+              "name": "renounceOwnership",
+              "inputs": [],
+              "outputs": [],
+              "state_mutability": "external"
+            }
+          ]
+        },
+        {
+          "type": "constructor",
+          "name": "constructor",
+          "inputs": [
+            {
+              "name": "owner",
+              "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+              "name": "name",
+              "type": "core::byte_array::ByteArray"
+            },
+            {
+              "name": "symbol",
+              "type": "core::byte_array::ByteArray"
+            },
+            {
+              "name": "initial_supply",
+              "type": "core::integer::u256"
+            },
+            {
+              "name": "recipient",
+              "type": "core::starknet::contract_address::ContractAddress"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "openzeppelin_token::erc20::erc20::ERC20Component::Transfer",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "from",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            },
+            {
+              "name": "to",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            },
+            {
+              "name": "value",
+              "type": "core::integer::u256",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "openzeppelin_token::erc20::erc20::ERC20Component::Approval",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "owner",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            },
+            {
+              "name": "spender",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            },
+            {
+              "name": "value",
+              "type": "core::integer::u256",
+              "kind": "data"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "openzeppelin_token::erc20::erc20::ERC20Component::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "Transfer",
+              "type": "openzeppelin_token::erc20::erc20::ERC20Component::Transfer",
+              "kind": "nested"
+            },
+            {
+              "name": "Approval",
+              "type": "openzeppelin_token::erc20::erc20::ERC20Component::Approval",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferred",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "previous_owner",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            },
+            {
+              "name": "new_owner",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferStarted",
+          "kind": "struct",
+          "members": [
+            {
+              "name": "previous_owner",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            },
+            {
+              "name": "new_owner",
+              "type": "core::starknet::contract_address::ContractAddress",
+              "kind": "key"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "openzeppelin_access::ownable::ownable::OwnableComponent::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "OwnershipTransferred",
+              "type": "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferred",
+              "kind": "nested"
+            },
+            {
+              "name": "OwnershipTransferStarted",
+              "type": "openzeppelin_access::ownable::ownable::OwnableComponent::OwnershipTransferStarted",
+              "kind": "nested"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "name": "dojo_starter::tokens::beast_coin::BeastCoin::Event",
+          "kind": "enum",
+          "variants": [
+            {
+              "name": "ERC20Event",
+              "type": "openzeppelin_token::erc20::erc20::ERC20Component::Event",
+              "kind": "flat"
+            },
+            {
+              "name": "OwnableEvent",
+              "type": "openzeppelin_access::ownable::ownable::OwnableComponent::Event",
+              "kind": "flat"
+            }
+          ]
+        }
+      ],
+      "constructor_calldata": [
+        "0x127fd5f1fe78a71f8bcd1fec63e3fe2f0486b6ecd5c86a0466c3a21fa5cfcec",
+        "str:BeastCoin",
+        "str:BEAST",
+        "u256:0x10000000000000",
+        "0x127fd5f1fe78a71f8bcd1fec63e3fe2f0486b6ecd5c86a0466c3a21fa5cfcec"
+      ]
+    }
+  ]
 }
