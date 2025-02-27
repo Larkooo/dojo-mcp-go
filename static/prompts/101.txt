@@ -7,7 +7,7 @@ When building a Dojo game, follow this essential workflow:
 
 2. Define Models (src/models.cairo)
    - Models are the foundation of your game state
-   - Use #[dojo::model] attribute on structs to define models
+   - Use #[dojo::model] attribute on structs to define models (ONLY ON THE MODEL STRUCT ITSELF, not children structs)
    - Add #[key] attribute to fields that uniquely identify entities
    - Example:
      ```
@@ -64,7 +64,8 @@ The documentation below provides additional details that may help you respond:
 {{insight}}
 
 Once you've read this guide you should follow this in order:
-- sozo init <name>
+- you should initialize the project with sozo init <name>
+- get rid / replace boilerplate stuff with stuff you write
 - call the model prompt and then use it to set up models
 - call the logic prompt to setup systems contracts etc.
 - call the config prompt finally to verify everything is well setup
