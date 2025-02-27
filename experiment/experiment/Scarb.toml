@@ -1,0 +1,35 @@
+[package]
+cairo-version = "=2.9.2"
+name = "dojo_starter"
+version = "1.1.0"
+edition = "2024_07"
+
+[cairo]
+sierra-replace-ids = true
+
+[scripts]
+migrate = "sozo build && sozo migrate"                      # scarb run migrate
+spawn = "sozo execute dojo_starter-actions spawn --wait"    # scarb run spawn
+move = "sozo execute dojo_starter-actions move -c 1 --wait" # scarb run move
+# Beast Battle Game Scripts
+initialize_game = "sozo execute dojo_starter-beast_battle initialize_game --wait"
+register_player = "sozo execute dojo_starter-beast_battle register_player --wait"
+attack_beast = "sozo execute dojo_starter-beast_battle attack_beast --wait"
+level_up_beast = "sozo execute dojo_starter-beast_battle level_up_beast --wait"
+player_level_up = "sozo execute dojo_starter-beast_battle player_level_up --wait"
+set_token_contract = "sozo execute dojo_starter-beast_battle set_token_contract --wait"
+# Token Scripts
+deploy_token = "sozo execute dojo_starter-beast_token constructor --wait"
+authorize_minter = "sozo execute dojo_starter-beast_token authorize_minter --wait"
+
+[dependencies]
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.2.1" }
+starknet = "=2.9.2"
+openzeppelin = "0.20.0"
+
+[[target.starknet-contract]]
+build-external-contracts = ["dojo::world::world_contract::world"]
+
+[dev-dependencies]
+cairo_test = "=2.9.2"
+dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.2.1" }

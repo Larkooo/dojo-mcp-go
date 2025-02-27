@@ -1,0 +1,70 @@
+When building a Dojo game, follow this essential workflow:
+
+1. Project Setup
+   - Use `sozo init <project-name>` to create a new Dojo project
+   - Understand the project structure (Scarb.toml, src directory, etc.)
+   - Configure your Scarb.toml with proper dependencies and metadata
+
+2. Define Models (src/models.cairo)
+   - Models are the foundation of your game state
+   - Use #[dojo::model] attribute on structs to define models
+   - Add #[key] attribute to fields that uniquely identify entities
+   - Example:
+     ```
+     #[derive(Copy, Drop, Serde)]
+     #[dojo::model]
+     struct Position {
+         #[key]
+         player: ContractAddress,
+         vec: Vec2,
+     }
+     ```
+   - Models can contain any Cairo struct that derives Introspect
+
+3. Implement Systems (src/systems/*.cairo)
+   - Systems are contracts that modify the world state
+   - Use #[dojo::contract] attribute to define a system
+   - Define interfaces with #[starknet::interface]
+   - Implement system functions that read/write models
+   - Example:
+     ```
+     #[dojo::contract]
+     mod actions {
+         fn spawn(ref self: ContractState) {
+             let mut world = self.world(@"namespace");
+             // Read/write models here
+         }
+     }
+     ```
+   - Use world.read_model() to retrieve data
+   - Use world.write_model() to update data
+   - Remember to make your world reference mutable when writing
+
+4. Configure Dojo Profiles
+   - Set up dojo_dev.toml and dojo_release.toml
+   - Define worlds, models, and systems
+   - Configure RPC endpoints and account information
+
+5. Testing and Deployment
+   - Write tests to verify your game logic
+   - Deploy using `sozo migrate`
+   - Interact with your game using the Dojo CLI or client libraries
+
+Remember:
+- Always specify the namespace when accessing the world
+- Make sure your world reference is mutable when writing models
+- Use proper imports for ModelStorage, EventStorage, etc.
+- Keep systems focused on specific game mechanics
+- Use events to notify about important state changes
+
+Please address the following user request about Dojo game development:
+{{prompt}}
+
+The documentation below provides additional details that may help you respond:
+{{insight}}
+
+Once you've read this book and setup your sozo project, you should follow the prompts in this order
+- model prompt to set up models
+- logic prompt to setup systems contracts etc.
+- config finally to verify everything is well setup
+- test to setup tests and verify game logic

@@ -1,0 +1,86 @@
+[world]
+name = "Beast Battle"
+description = "A Dojo game where players attack a beast to earn XP and level up. The beast gets stronger as it levels up."
+cover_uri = "file://assets/cover.png"
+icon_uri = "file://assets/icon.png"
+website = "https://github.com/dojoengine/dojo-starter"
+seed = "beast_battle"
+
+[world.socials]
+x = "https://x.com/ohayo_dojo"
+discord = "https://discord.gg/FB2wR6uF"
+github = "https://github.com/dojoengine/dojo-starter"
+telegram = "https://t.me/dojoengine"
+
+[namespace]
+default = "dojo_starter"
+
+[env]
+# These values would be replaced with actual production values
+rpc_url = "https://starknet-mainnet.infura.io/v3/YOUR_API_KEY"
+account_address = "YOUR_ACCOUNT_ADDRESS"
+private_key = "YOUR_PRIVATE_KEY"
+
+# Models
+[[models]]
+tag = "dojo_starter-Position"
+description = "Position of a player in the world"
+
+[[models]]
+tag = "dojo_starter-Moves"
+description = "Moves available to a player"
+
+[[models]]
+tag = "dojo_starter-DirectionsAvailable"
+description = "Directions available to a player"
+
+# Beast Battle Game Models
+[[models]]
+tag = "dojo_starter-Beast"
+description = "The main beast in the game that players attack"
+
+[[models]]
+tag = "dojo_starter-Player"
+description = "Player stats and attributes"
+
+[[models]]
+tag = "dojo_starter-BattleResult"
+description = "Results of player attacks on the beast"
+
+[[models]]
+tag = "dojo_starter-GameSettings"
+description = "Global game settings and parameters"
+
+# Events
+[[events]]
+tag = "dojo_starter-Moved"
+description = "When a player has moved"
+
+# Beast Battle Game Events
+[[events]]
+tag = "dojo_starter-PlayerRegistered"
+description = "When a player registers in the game"
+
+[[events]]
+tag = "dojo_starter-BeastAttacked"
+description = "When a player attacks the beast"
+
+[[events]]
+tag = "dojo_starter-PlayerLeveledUp"
+description = "When a player levels up"
+
+[[events]]
+tag = "dojo_starter-BeastLeveledUp"
+description = "When the beast levels up after being defeated"
+
+# Contracts
+[[contracts]]
+tag = "dojo_starter-actions"
+description = "Set of actions for a player"
+
+[[contracts]]
+tag = "dojo_starter-beast_battle"
+description = "Beast battle game system"
+
+[writers]
+"dojo_starter" = ["dojo_starter-actions", "dojo_starter-beast_battle"]

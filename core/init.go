@@ -10,4 +10,5 @@ func RegisterDefaultTools(registry *Registry) {
 	registry.Register(tools.NewCodeTool(registry))
 	registry.Register(tools.NewTestTool(registry))
 	registry.Register(tools.NewConfigTool(registry))
+	registry.Register(tools.New101Tool(registry))
 }

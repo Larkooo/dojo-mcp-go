@@ -26,10 +26,11 @@ When working with Dojo systems and logic, remember these critical points:
 9. For advanced operations:
    - Use read_member/write_member for accessing specific model fields
    - Use read_schema for efficiently reading parts of models
-   - Use world.uuid() to generate unique IDs
 10. Make sure you have correct imports when reading models etc.. like importing dojo::model::ModelStorage when write_model or read_model
 11. Make sure you retrieve the world correctly. Always specify the chosen namespace like self.world(@"namespace")
 12. Make sure that your world reference is mutable when you are writing models. `let mut world = self.world(@"namespace");`
+13. When doing conversions between integers. Keep in mind that going from types like ContractAddress -> u32 or the opposite is impossible.
+   - You will need to convert the ContractAddress into a Felt and then into a u32. Also remember that conversions to smaller types, like a Felt to a u32 need to use try_into().unwrap()
 
 Please address the following user request about Dojo systems and logic:
 {{prompt}}
