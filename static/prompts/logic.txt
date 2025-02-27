@@ -72,6 +72,7 @@ if let Some((contract_address, class_hash)) = world.dns("my_contract") {
     // Do something with the contract address and class hash.
     // Return dispatcher etc.
 }
+18. Be mindful of moving variables too. Let's say we have an array and we use its len in a struct, we should store the len in a variable of its own and then reference that in the struct.
 
 Please address the following user request about Dojo systems and logic:
 {{prompt}}
