@@ -27,6 +27,8 @@ When working with Dojo systems and logic, remember these critical points:
    - Use read_member/write_member for accessing specific model fields
    - Use read_schema for efficiently reading parts of models
 10. Make sure you have correct imports when reading models etc.. like importing dojo::model::ModelStorage when write_model or read_model
+   - ALSO MAKE SURE to use the correct project name when importing project files, if the project name in Scarb.toml is dojo_starter, you can use dojo_starter::models::Position etc.. 
+   - If you want to be sure you can use the crate::models::Position notation
 11. Make sure you retrieve the world correctly. Always specify the chosen namespace like self.world(@"namespace")
 12. Make sure that your world reference is mutable when you are writing models. `let mut world = self.world(@"namespace");`
 13. When doing conversions between integers. Keep in mind that going from types like ContractAddress -> u32 or the opposite is impossible.
