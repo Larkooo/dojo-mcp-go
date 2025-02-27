@@ -72,6 +72,7 @@ if let Some((contract_address, class_hash)) = world.dns("my_contract") {
     // Do something with the contract address and class hash.
     // Return dispatcher etc.
 }
+YOU NEED TO USE THE WorldStorageTrait to have access to that.
 18. Be mindful of moving variables too. Let's say we have an array and we use its len in a struct, we should store the len in a variable of its own and then reference that in the struct.
 19. MAKE SURE that type conversions from for example u64 to u32 are unsafe! So you will need to use try_into() and unwrap it or expect instead of a simple into().
 
