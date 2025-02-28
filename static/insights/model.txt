@@ -508,3 +508,24 @@ felt252	felt252, ClassHash, ContractAddress
 ClassHash	felt252, ClassHash, ContractAddress
 ContractAddress	felt252, ClassHash, ContractAddress
 EthAddress	felt252, ClassHash, ContractAddress, EthAddress
+
+Allowed primitive types
+bool
+u8
+u16
+u32
+u64
+u128
+u256
+i8
+i16
+i32
+i64
+i128
+felt252
+ClassHash
+ContractAddress
+EthAddress
+ByteArray - mostly used for dynamica sized strings
+Tuples - like (u32, u32)
+Array - like Array<u32>
