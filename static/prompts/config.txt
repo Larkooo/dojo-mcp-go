@@ -108,6 +108,4 @@ dungeon = [  ]
 
 [profile.saya]
 
-
-Please address the following user request about Dojo configuration:
-{{prompt}}
+{{@config}}

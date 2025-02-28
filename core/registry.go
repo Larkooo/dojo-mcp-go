@@ -248,8 +248,51 @@ func (r *Registry) RenderPrompt(name string, vars map[string]string) (string, er
 	}
 
 	result := prompt.Template
+
+	// First, handle resource embedding with {{@resource_name}} syntax
+	// This needs to be done before variable replacement to avoid conflicts
+	resourcePattern := "{{@"
+	for {
+		startIdx := strings.Index(result, resourcePattern)
+		if startIdx == -1 {
+			break
+		}
+
+		endIdx := strings.Index(result[startIdx:], "}}")
+		if endIdx == -1 {
+			break
+		}
+		endIdx += startIdx
+
+		resourceName := strings.TrimSpace(result[startIdx+3 : endIdx])
+		if resourceName != "" {
+			// Try to get the resource content
+			resource, resourceExists := r.GetResource(resourceName)
+			if resourceExists {
+				// Replace the placeholder with the resource content
+				result = result[:startIdx] + resource.Content + result[endIdx+2:]
+				log.Debug().
+					Str("component", "registry").
+					Str("prompt", name).
+					Str("resource", resourceName).
+					Msg("Embedded resource into prompt")
+			} else {
+				// If resource doesn't exist, leave a note
+				result = result[:startIdx] + "[Resource '" + resourceName + "' not found]" + result[endIdx+2:]
+				log.Warn().
+					Str("component", "registry").
+					Str("prompt", name).
+					Str("resource", resourceName).
+					Msg("Resource not found for embedding")
+			}
+		} else {
+			// Move past this instance to avoid infinite loop
+			result = result[:startIdx] + "[Invalid resource syntax]" + result[endIdx+2:]
+		}
+	}
+
+	// Now handle regular variable replacement
 	for key, value := range vars {
-		// Simple variable replacement without special handling for insights
 		result = strings.ReplaceAll(result, "{{"+key+"}}", value)
 	}
 

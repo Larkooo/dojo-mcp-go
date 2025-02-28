@@ -32,5 +32,4 @@ When writing tests for Dojo systems, remember these critical points:
    - State changes after system calls
    - Error conditions with proper assertions
 
-Please help write tests for the following request:
-{{prompt}}
+{{@test}}

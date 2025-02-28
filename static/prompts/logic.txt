@@ -478,6 +478,4 @@ mod tests {
     }
 }
 
-
-Please address the following user request about Dojo systems and logic:
-{{prompt}}
+{{@logic}}

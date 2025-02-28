@@ -57,12 +57,14 @@ Remember:
 - Keep systems focused on specific game mechanics
 - Use events to notify about important state changes
 
-Please address the following user request about Dojo game development:
-{{prompt}}
-
 Once you've read this guide you should follow this in order. You should first initialize the project with sozo init <name>,
 You should get rid / replace boilerplate stuff while you write your new models and systems.
 You should write models with the help of the dojo model prompt with the available ressources you have. Once the models are written, you should use them to write your systems, with the help of the logic prompt.
 Once all of those are done, you should write the project configuration files like Scarb.toml and dojo profiles. With the help dojo config prompt.
 
-You should always try to get more insight on prompts you're using, so for example for this prompt you may use the 101 ressource insight. You should do the same for other prompts.
+WHENEVER YOU WANT TO MODIFY MODELS YOU SHOULD USE THE MODELS PROMPT AND RESSOURCE. TO KNOW HOW TO WRITE THEM.
+WHWNEVER YOU WANT TO WRITE SYSTEMS AND CONTRACTS. YOU SHOULD USE THE LOGIC PROMPT AND RESSOURCE. FOLLOW THE INSTRUCTIONS
+SAME THING FOR ALL OTHER INSTRUCTIONS. YOUR FIRST PRIORITY IS TO GET THE FRAMEWORK RESSOURCE TO UNDERSTAND HOW IT WORKS.
+YOUR PRIORITY IS TO ALSO USE RESSOURCES WHENEVER THEY COULD BE USEFUL IN WHAT YOU ARE WRITING.
+
+{{@101}}

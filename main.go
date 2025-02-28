@@ -37,7 +37,7 @@ func main() {
 	core.RegisterDefaultTools(registry)
 	log.Info().
 		Str("component", "core").
-		Msg("Registered default tools")
+		Msg("Registered default tools with resource embedding capability")
 
 	// Load resources from static/insights directory
 	if err := registry.LoadResources(); err != nil {

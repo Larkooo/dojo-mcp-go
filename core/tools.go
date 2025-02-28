@@ -23,6 +23,11 @@ func registerPromptTools(registry *Registry) {
 		return
 	}
 
+	log.Info().
+		Str("component", "tools").
+		Int("count", len(registry.GetAllPrompts())).
+		Msg("Loaded prompts with resource embedding capability")
+
 	// Then create a tool for each prompt
 	for name, prompt := range registry.GetAllPrompts() {
 		// Create a tool for this prompt

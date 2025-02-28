@@ -42,10 +42,6 @@ func NewPromptTool(name, description, promptName string, renderer common.PromptR
 		return &PromptTool{
 			Tool: mcp.NewTool(name,
 				mcp.WithDescription(description),
-				mcp.WithString("prompt",
-					mcp.Required(),
-					mcp.Description("Your specific request"),
-				),
 			),
 			promptName: promptName,
 			renderer:   renderer,
@@ -98,5 +94,7 @@ func (t *PromptTool) Execute(ctx context.Context, request mcp.CallToolRequest) (
 		return mcp.NewToolResultError(fmt.Sprintf("Failed to render prompt: %v", err)), nil
 	}
 
-	return mcp.NewToolResultText(fullPrompt + "\n\n" + "For this tool, you may use its corresponding ressource to get more documentation on how to proceed."), nil
+	// Return the rendered prompt without the additional message about retrieving the resource
+	// since resources are now embedded directly in the prompt
+	return mcp.NewToolResultText(fullPrompt), nil
 }
