@@ -63,10 +63,7 @@ Please address the following user request about Dojo game development:
 The documentation below provides additional details that may help you respond:
 {{insight}}
 
-Once you've read this guide you should follow this in order:
-- you should initialize the project with sozo init <name>
-- get rid / replace boilerplate stuff with stuff you write
-- call the model prompt and then use it to set up models
-- call the logic prompt to setup systems contracts etc.
-- call the config prompt finally to verify everything is well setup
-- call the test prompt to setup tests and verify game logic
+Once you've read this guide you should follow this in order. You should first initialize the project with sozo init <name>,
+You should get rid / replace boilerplate stuff while you write your new models and systems.
+You should write models with the help of the dojo model prompt. Once the models are written, you should use them to write your systems, with the help of the logic prompt.
+Once all of those are done, you should write the project configuration files like Scarb.toml and dojo profiles. With the help dojo config prompt.

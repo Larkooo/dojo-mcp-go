@@ -26,6 +26,8 @@ func main() {
 		"Dojo MCP",
 		"0.0.1",
 		server.WithPromptCapabilities(true),
+		server.WithResourceCapabilities(true, true),
+		server.WithLogging(),
 	)
 
 	// Create registry
@@ -48,6 +50,36 @@ func main() {
 			Str("component", "resources").
 			Int("count", len(registry.GetAllResources())).
 			Msg("Successfully loaded resources")
+	}
+
+	// Register resources
+	for name, resource := range registry.GetAllResources() {
+		// Create resource with enhanced metadata
+		mcpResource := mcp.NewResource(
+			name,
+			name,
+			mcp.WithResourceDescription(fmt.Sprintf("Resource for %s", name)),
+			mcp.WithMIMEType("text/plain"),
+			mcp.WithAnnotations([]mcp.Role{mcp.RoleAssistant}, 0.8),
+		)
+
+		// Add resource with its handler
+		s.AddResource(mcpResource, func(ctx context.Context, request mcp.ReadResourceRequest) ([]interface{}, error) {
+			return []interface{}{
+				mcp.TextResourceContents{
+					ResourceContents: mcp.ResourceContents{
+						URI:      name,
+						MIMEType: "text/plain",
+					},
+					Text: resource.Content,
+				},
+			}, nil
+		})
+
+		log.Debug().
+			Str("component", "server").
+			Str("resource", name).
+			Msg("Added resource to server")
 	}
 
 	// Load prompts from static/prompts directory

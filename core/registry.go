@@ -249,19 +249,8 @@ func (r *Registry) RenderPrompt(name string, vars map[string]string) (string, er
 
 	result := prompt.Template
 	for key, value := range vars {
-		if strings.HasPrefix(value, "prompt:") {
-			promptName := strings.TrimPrefix(value, "prompt:")
-			if otherPrompt, exists := r.prompts[promptName]; exists {
-				result = strings.ReplaceAll(result, "{{"+key+"}}", otherPrompt.Template)
-			}
-		} else if strings.HasPrefix(value, "insight:") {
-			insightName := strings.TrimPrefix(value, "insight:")
-			if resource, exists := r.resources[insightName]; exists {
-				result = strings.ReplaceAll(result, "{{"+key+"}}", resource.Content)
-			}
-		} else {
-			result = strings.ReplaceAll(result, "{{"+key+"}}", value)
-		}
+		// Simple variable replacement without special handling for insights
+		result = strings.ReplaceAll(result, "{{"+key+"}}", value)
 	}
 
 	// Check if any variables are still in the template
@@ -292,7 +281,7 @@ func (r *Registry) GetPromptResult(name string, request mcp.GetPromptRequest) (*
 		return nil, fmt.Errorf("prompt '%s' not found", name)
 	}
 
-	// Render the prompt
+	// Render the prompt with the provided variables directly
 	renderedPrompt, err := r.RenderPrompt(name, request.Params.Arguments)
 	if err != nil {
 		return nil, fmt.Errorf("failed to render prompt: %v", err)
