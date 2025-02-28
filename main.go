@@ -33,7 +33,7 @@ func main() {
 	// Create registry
 	registry := core.NewRegistry()
 
-	// Register all tools
+	// Register all tools (this will also load and register prompts as tools)
 	core.RegisterDefaultTools(registry)
 	log.Info().
 		Str("component", "core").
@@ -82,19 +82,6 @@ func main() {
 			Msg("Added resource to server")
 	}
 
-	// Load prompts from static/prompts directory
-	if err := registry.LoadPrompts(); err != nil {
-		log.Warn().
-			Str("component", "prompts").
-			Err(err).
-			Msg("Failed to load prompts")
-	} else {
-		log.Info().
-			Str("component", "prompts").
-			Int("count", len(registry.GetAllPrompts())).
-			Msg("Successfully loaded prompts")
-	}
-
 	// Add all tools to the server
 	for _, tool := range registry.GetAllTools() {
 		s.AddTool(tool.Definition(), tool.Execute)
@@ -102,35 +89,6 @@ func main() {
 			Str("component", "server").
 			Str("tool", tool.Name()).
 			Msg("Added tool to server")
-	}
-
-	// Add all prompts to the server using the native prompt functionality
-	for name, prompt := range registry.GetAllPrompts() {
-		// Convert our prompt format to MCP prompt format
-		mcpPromptArgs := make([]mcp.PromptArgument, 0, len(prompt.Variables))
-		for _, varName := range prompt.Variables {
-			mcpPromptArgs = append(mcpPromptArgs, mcp.PromptArgument{
-				Name:        varName,
-				Description: fmt.Sprintf("Variable %s for prompt %s", varName, name),
-				Required:    true,
-			})
-		}
-
-		mcpPrompt := mcp.Prompt{
-			Name:        name,
-			Description: prompt.Description,
-			Arguments:   mcpPromptArgs,
-		}
-
-		// Add the prompt to the MCP server
-		s.AddPrompt(mcpPrompt, func(ctx context.Context, request mcp.GetPromptRequest) (*mcp.GetPromptResult, error) {
-			return registry.GetPromptResult(name, request)
-		})
-
-		log.Info().
-			Str("component", "server").
-			Str("prompt", name).
-			Msg("Added prompt to MCP server")
 	}
 
 	log.Info().

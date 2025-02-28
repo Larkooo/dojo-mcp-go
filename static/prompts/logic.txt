@@ -78,12 +78,6 @@ YOU NEED TO USE THE WorldStorageTrait to have access to that.
 20. Arrays in Cairo are immutable, this means that once you append something to an array you CANNOT MUTATE it afterwards.
 21. Desnap (*) operator in cairo can only be used to dereference snapshots (@). Snapshot is an immutable view of a value at a certain point in time
 
-Please address the following user request about Dojo systems and logic:
-{{prompt}}
-
-The documentation below provides additional details that may help you respond:
-{{insight}}
-
 You should refer to this most up to date example here
 
 use dojo_examples::models::{Direction, Position};
@@ -483,3 +477,7 @@ mod tests {
         actions_system.enter_dungeon(dungeon_addr);
     }
 }
+
+
+Please address the following user request about Dojo systems and logic:
+{{prompt}}

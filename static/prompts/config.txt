@@ -41,14 +41,6 @@ When working with Dojo configuration, remember these critical points:
    - Missing or incorrect permissions in [writers]/[owners]
    - Improper initialization arguments
 
-Please address the following user request about Dojo configuration:
-{{prompt}}
-
-The documentation below provides additional details that may help you respond:
-{{insight}} 
-
-You should refer to this most up to date example here
-
 You should refer to the most up to date version, here is the latest up to date examples:
 
 [package]
@@ -115,3 +107,7 @@ default = [ "dungeon" ]
 dungeon = [  ]
 
 [profile.saya]
+
+
+Please address the following user request about Dojo configuration:
+{{prompt}}

@@ -39,4 +39,7 @@ type Prompt struct {
 type PromptRenderer interface {
 	// RenderPrompt fills a prompt template with the provided variables
 	RenderPrompt(name string, vars map[string]string) (string, error)
+
+	// GetPrompt returns a specific prompt by name
+	GetPrompt(name string) (Prompt, bool)
 }

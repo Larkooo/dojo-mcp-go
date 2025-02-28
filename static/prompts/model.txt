@@ -25,12 +25,6 @@ When working with Dojo models, remember these critical points:
 9. Make sure members, structs, enums etc.. are correctly visible. You should make them public by putting `pub` in front of them, for ones that can be accessed from systems.
 10. YOU CANNOT use the Copy trait when dealing with Array or ByteArray. If an array is in a struct, dont put the Copy trait on it, same for upper level parents. Be mindful of traits you derive
 
-Please address the following user request about Dojo models:
-{{prompt}}
-
-The documentation below provides additional details that may help you respond:
-{{insight}}
-
 You should refer to this most up to date example here
 use starknet::ContractAddress;
 
@@ -166,3 +160,5 @@ mod tests {
         assert(position.is_equal(Vec2 { x: 420, y: 0 }), 'not equal');
     }
 }
+Please address the following user request about Dojo models:
+{{prompt}}
