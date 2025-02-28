@@ -62,9 +62,11 @@ You should get rid / replace boilerplate stuff while you write your new models a
 You should write models with the help of the dojo model prompt with the available ressources you have. Once the models are written, you should use them to write your systems, with the help of the logic prompt.
 Once all of those are done, you should write the project configuration files like Scarb.toml and dojo profiles. With the help dojo config prompt.
 
-WHENEVER YOU WANT TO MODIFY MODELS YOU SHOULD USE THE MODELS PROMPT AND RESSOURCE. TO KNOW HOW TO WRITE THEM.
-WHWNEVER YOU WANT TO WRITE SYSTEMS AND CONTRACTS. YOU SHOULD USE THE LOGIC PROMPT AND RESSOURCE. FOLLOW THE INSTRUCTIONS
-SAME THING FOR ALL OTHER INSTRUCTIONS. YOUR FIRST PRIORITY IS TO GET THE FRAMEWORK RESSOURCE TO UNDERSTAND HOW IT WORKS.
-YOUR PRIORITY IS TO ALSO USE RESSOURCES WHENEVER THEY COULD BE USEFUL IN WHAT YOU ARE WRITING.
+WHENEVER YOU WANT TO ARE DEALING WITH READING AND WRITING MODELS YOU SHOULD USE THE MODEL TOOL. YOU KNOW MORE INSIGHT TO KNOW HOW TO WRITE THEM.
+WHENEVER YOU WANT TO ARE DEALING WITH READING AND WRITING SYSTEMS AND CODE YOU SHOULD USE THE LOGIC TOOL. YOU KNOW MORE INSIGHT TO KNOW HOW TO WRITE THEM.
+
+SAME thing for everything else. you need to use the corresponding tools
+
+use 101 to setup the project and then models tool for writing models, logic for systems and code and finally config for configuring the project
 
 {{@101}}
