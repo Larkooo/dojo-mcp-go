@@ -22,12 +22,21 @@ func main() {
 		Msg("Starting Dojo MCP server")
 
 	// Create MCP server with prompt capabilities enabled
+	sensei, err := os.ReadFile("static/sensei.md")
+	if err != nil {
+		log.Error().
+			Str("component", "main").
+			Err(err).
+			Msg("Failed to read sensei.md system prompt")
+	}
+
 	s := server.NewMCPServer(
 		"Dojo MCP",
 		"0.0.1",
 		server.WithPromptCapabilities(true),
 		server.WithResourceCapabilities(true, true),
 		server.WithLogging(),
+		server.WithInstructions(string(sensei)),
 	)
 
 	// Create registry
