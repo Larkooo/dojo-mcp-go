@@ -105,4 +105,12 @@ func main() {
 			Msg("Failed to start SSE server")
 		os.Exit(1)
 	}
+
+	if err := server.ServeStdio(s); err != nil {
+		log.Error().
+			Str("component", "server").
+			Err(err).
+			Msg("Failed to start stdio server")
+		os.Exit(1)
+	}
 }
