@@ -1,7 +1,7 @@
 package core
 
 import (
-	"dojo-mcp/tools"
+	"github.com/Larkooo/dojo-mcp-go/tools"
 
 	"github.com/rs/zerolog/log"
 )

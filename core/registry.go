@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"dojo-mcp/common"
+	"github.com/Larkooo/dojo-mcp-go/common"
 
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/rs/zerolog/log"
@@ -335,7 +335,7 @@ func (r *Registry) GetPromptResult(name string, request mcp.GetPromptRequest) (*
 		Messages: []mcp.PromptMessage{
 			{
 				Role:    "user",
-				Content: renderedPrompt,
+				Content: mcp.TextContent{Text: renderedPrompt},
 			},
 		},
 	}, nil

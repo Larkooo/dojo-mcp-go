@@ -9,8 +9,8 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 	"github.com/rs/zerolog/log"
 
-	"dojo-mcp/core"
-	"dojo-mcp/logger"
+	"github.com/Larkooo/dojo-mcp-go/core"
+	"github.com/Larkooo/dojo-mcp-go/logger"
 )
 
 func main() {
@@ -64,14 +64,12 @@ func main() {
 		)
 
 		// Add resource with its handler
-		s.AddResource(mcpResource, func(ctx context.Context, request mcp.ReadResourceRequest) ([]interface{}, error) {
-			return []interface{}{
+		s.AddResource(mcpResource, func(ctx context.Context, request mcp.ReadResourceRequest) ([]mcp.ResourceContents, error) {
+			return []mcp.ResourceContents{
 				mcp.TextResourceContents{
-					ResourceContents: mcp.ResourceContents{
-						URI:      name,
-						MIMEType: "text/plain",
-					},
-					Text: resource.Content,
+					URI:      name,
+					MIMEType: "text/plain",
+					Text:     resource.Content,
 				},
 			}, nil
 		})

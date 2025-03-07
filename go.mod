@@ -13,3 +13,5 @@ require (
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	golang.org/x/sys v0.12.0 // indirect
 )
+
+replace github.com/mark3labs/mcp-go => github.com/Larkooo/mcp-go v0.0.0-20250307060526-8d3ecb3427cf

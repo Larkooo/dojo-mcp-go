@@ -2,9 +2,9 @@ package tools
 
 import (
 	"context"
-	"dojo-mcp/common"
 	"fmt"
 
+	"github.com/Larkooo/dojo-mcp-go/common"
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/rs/zerolog/log"
 )
