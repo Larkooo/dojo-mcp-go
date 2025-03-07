@@ -1,3 +1,4 @@
+This is the tool you would use to get a basic understanding of Dojo.
 When building a Dojo game, follow this essential workflow:
 
 1. Project Setup

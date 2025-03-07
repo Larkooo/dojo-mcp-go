@@ -1,3 +1,4 @@
+This is the code and systems preprompt that should be called whenever you (the LLM/agent) are trying to write code or anything related to cairo and systems. If the user asks you to write anything related to that, you would call this tool first.  
 When working with Dojo systems and logic, remember these critical points:
 
 1. Systems are functions within Dojo contracts that act on the world
