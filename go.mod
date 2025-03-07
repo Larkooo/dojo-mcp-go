@@ -1,4 +1,4 @@
-module github.com/Larkooo/dojo-mcp
+module github.com/Larkooo/dojo-mcp-go
 
 go 1.23.0
 
