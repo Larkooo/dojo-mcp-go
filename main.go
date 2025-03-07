@@ -22,7 +22,7 @@ func main() {
 		Msg("Starting Dojo MCP server")
 
 	// Create MCP server with prompt capabilities enabled
-	sensei, err := os.ReadFile("static/sensei.md")
+	sensei, err := os.ReadFile("static/prompts/sensei.txt")
 	if err != nil {
 		log.Error().
 			Str("component", "main").
